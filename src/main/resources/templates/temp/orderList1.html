@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/passgener.css}">
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+    <script th:src="@{/js/page.js}"></script>
+</head>
+<body>
+<form id="myForm" method="post" class="layui-form" th:action="@{/ticket/order/list}"
+>
+    <span class="layui-breadcrumb">
+          <a th:href="@{/index}" target="_top" onclick="location.reload()">首页</a>
+          <a><cite>我的订单</cite></a>
+        </span>
+    <div style="margin-top: 20px;">
+
+        <input id="pageNo" name="pageNo" type="hidden" th:value="${session.pageNo}"/>
+        <input id="pageSize" name="pageSize" type="hidden" th:value="${session.pageSize}"/>
+        <input id="pageTotal" type="hidden" th:value="${session.pageInfo.total}"/>
+    </div>
+
+    <div class="layui-inline">
+        <label class="layui-form-label">出发地</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${session.departureInput}" name="departureInput" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">目的地</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${session.destinationInput}" name="destinationInput" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline" >
+        <label class="layui-form-label">支付时间</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${departureTimeInput}" name="departureTimeInput"
+                   class="layui-input" id="departureTimeInput"
+                   data-random="" autocomplete="off" readonly
+            >
+        </div>
+    </div>
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <button type="submit" class="layui-btn" lay-submit="">
+                <i class="layui-icon" style="font-size: 24px;">&#xe615;</i>搜索
+            </button>
+        </div>
+    </div>
+
+
+</form>
+
+
+<div style="margin-top: 30px;">
+    <div class="layui-collapse" lay-accordion>
+        <div class="layui-colla-item" th:each="order : ${orderList}">
+            <h2 class="layui-colla-title">
+                <span>订单状态：</span>
+
+                <button class="layui-btn layui-btn-xs layui-btn-normal" th:if="${order.status == '已支付'}">已完成</button>
+            </span>
+            </h2>
+            <div class="layui-colla-content layui-show">
+                <ul class="layui-timeline">
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <p>出发地：[[${order.route.departure}]]</p>
+                            <p>目的地：[[${order.route.destination}]]</p>
+                            <p>车牌号码：[[${order.schedule.busNumber}]]</p>
+                            <p>发车时间：[[${#dates.format(order.schedule.departureTime,'yyyy-MM-dd HH:mm:ss')}]]</p>
+                            <p>乘客人数：[[${order.count}]]</p>
+                            <p>订单金额：[[${order.money}]]元</p>
+                            <p>支付时间：[[${#dates.format(order.payTime,'yyyy-MM-dd HH:mm:ss')}]]</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-colla-item" th:if="${orderListNum == 0}">
+            <h2 class="layui-colla-title">暂无订单数据</h2>
+        </div>
+    </div>
+
+</div>
+<div id="pageDemo" style="text-align: center"></div>
+
+<script>
+    // 在HTML页面上添加Layui的JavaScript代码
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        // 清空时间输入框的值
+        // $('#departureTimeInput').val('');
+        laydate.render({
+            elem: '#departureTimeInput', //绑定的元素
+            type: 'date' ,// 设置时间格式为：年月日
+            min: 0,// 设置可选的最小日期时间，这里是最小值为当前时间（0代表当前时间）。
+            trigger: 'click',// 设置弹出时间选择器的事件为点击
+        });
+    });
+
+</script>
+
+</body>
+</html>

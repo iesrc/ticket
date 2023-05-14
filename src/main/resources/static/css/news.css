@@ -1,0 +1,21 @@
+body{
+    margin: 0;
+    padding: 30px;
+}
+
+.input-block-margin-bottom {
+    margin-bottom: 30px;
+}
+
+/*
+    .text-ellipsis类样式：
+    行内元素超出父元素宽度时，只显示省略号
+*/
+.text-ellipsis {
+    display: block; /* 将行内元素转为块级元素，以便设置宽度和高度等特性 */
+    overflow: hidden; /* 超出元素范围的内容隐藏 */
+    white-space: nowrap; /* 设置为不自动换行，保证显示一行 */
+    text-overflow: ellipsis; /* 超出省略显示，显示省略号 */
+    max-width: 200px; /* 元素最大宽度，超过宽度将显示省略号 */
+}
+

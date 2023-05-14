@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ticketdb?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+
+  #配置启动项目上访问templates文件夹下的页面
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    enable-spring-el-compiler: true
+
+  # 禁用缓存
+  web:
+    resources:
+      cache:
+        period: -1
+
+# 分页插件配置
+pagehelper:
+  helper-dialect: mysql # 指定数据库类型，默认为 mysql
+  reasonable: true # 分页合理化参数，默认为false，需要开启为true，开启规则参见 com.github.pagehelper.PageHelper 的说明
+  support-methods-arguments: true # 支持通过 Mapper 接口参数来传递分页参数，默认为false
+#  params: pageNum=page;pageSize=limit;offsetAsPageNum=true;rowBoundsWithCount=true # 支持通过拦截器参数来传递分页参数，分别为：分页参数名称，和分页参数绑定的属性
+
+#配置日志信息
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
+
+
+

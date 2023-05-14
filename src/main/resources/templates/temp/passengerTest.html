@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table class="layui-table" lay-even lay-filter="passengerTable" id="passengerTable">
+</table>
+<!--    编辑乘客信息模态框-->
+<div id="editPassengerModal" class="layui-modal">
+    <div class="layui-modal-content">
+        <form id="editPassengerForm" class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入姓名" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">身份证号码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="identity" placeholder="请输入身份证号码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="gender" checked value="男" title="男">
+                    <input type="radio" name="gender" value="女" title="女">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="layui-modal-footer">
+        <button class="layui-btn layui-btn-primary" lay-event="cancel">
+            取消
+        </button>
+        <button class="layui-btn" lay-event="save">
+            保存
+        </button>
+    </div>
+</div>
+<div id="pageDemo"></div>
+</div>
+</body>
+</html>

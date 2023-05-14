@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>汽车票订票系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.7/css/layui.min.css">
+</head>
+<body>
+<!-- 顶部 -->
+    <div class="layui-header">
+        <div class="layui-logo">汽车票订票系统</div>
+        <!-- 导航栏 -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"><a href="">首页</a></li>
+            <li class="layui-nav-item"><a href="">我的订单</a></li>
+            <li class="layui-nav-item">
+                <!-- 下拉菜单 -->
+                <a href="javascript:;">个人中心</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本信息</a></dd>
+                    <dd><a href="">修改密码</a></dd>
+                    <dd><a href="">退出登录</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 左侧菜单栏 -->
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">车票信息管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">车票信息查询</a></dd>
+                        <dd><a href="">车票预定</a></dd>
+                        <dd><a href="">车票退改签</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">会员信息管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">乘车人信息管理</a></dd>
+                        <dd><a href="">我的订单</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">管理员信息管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">预订信息审核</a></dd>
+                        <dd><a href="">会员信息审核</a></dd>
+                        <dd><a href="">发布公告</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 主体部分 -->
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="layui-container">
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">车票信息查询及预定</div>
+                        <div class="layui-card-body">
+                            <form class="layui-form" action="">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">起点</label>
+                                        <div class="layui-input-inline">
+                                            <select name="start" lay-verify="required">
+                                                <option value="">请选择</option>
+                                                <option value="1">北京</option>
+                                                <option value="2">上海</option>
+                                                <option value="3">广州</option>
+                                                <option value="4">深圳</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">终点</label>
+                                        <div class="layui-input-inline">
+                                            <select name="end" lay-verify="required">
+                                                <option value="">请选择</option>
+                                                <option value="1">北京</option>
+                                                <option value="2">上海</option>
+                                                <option value="3">广州</option>
+                                                <option value="4">深圳</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">出发时间</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" class="layui-input" name="departTime" placeholder="yyyy-MM-dd HH:mm:ss"
+                                                   lay-verify="required" id="departTime">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">到达时间</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" class="layui-input" name="arriveTime" placeholder="yyyy-MM-dd HH:mm:ss"
+                                                   lay-verify="required" id="arriveTime">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">查询</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <table class="layui-table" lay-filter="ticket">
+                                <thead>
+                                <tr>
+                                    <th lay-data="{field:'start', sort:true}">起点</th>
+                                    <th lay-data="{field:'end', sort:true}">终点</th>
+                                    <th lay-data="{field:'departTime', sort:true}">出发时间</th>
+                                    <th lay-data="{field:'arriveTime', sort:true}">到达时间</th>
+                                    <th lay-data="{field:'price', sort:true}">价格</th>
+                                    <th lay-data="{field:'status', sort:true}">状态</th>
+                                    <th lay-data="{toolbar:'#toolBar', width:200}">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>北京</td>
+                                    <td>上海</td>
+                                    <td>2023-03-01 08:00:00</td>
+                                    <td>2023-03-01 12:00:00</td>
+                                    <td>￥350</td>
+                                    <td>200</td>
+                                    <td>120</td>
+                                    <td>80</td>
+                                    <td>
+                                        <button class="layui-btn layui-btn-normal layui-btn-sm">预订</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tbody>
+                                <tr>
+                                    <td>上海</td>
+                                    <td>北京</td>
+                                    <td>2023-03-02 09:00:00</td>
+                                    <td>2023-03-02 13:00:00</td>
+                                    <td>￥350</td>
+                                    <td>200</td>
+                                    <td>120</td>
+                                    <td>80</td>
+                                    <td>
+                                        <button class="layui-btn layui-btn-normal layui-btn-sm">预订</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tbody>
+                                <tr>
+                                    <td>上海</td>
+                                    <td>北京</td>
+                                    <td>2023-03-03 10:00:00</td>
+                                    <td>2023-03-03 14:00:00</td>
+                                    <td>￥350</td>
+                                    <td>200</td>
+                                    <td>120</td>
+                                    <td>80</td>
+                                    <td>
+                                        <button class="layui-btn layui-btn-normal layui-btn-sm">预订</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/layui.all.js"></script>
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function(){
+            var element = layui.element;
+        });
+    </script>
+</body>
+</html>

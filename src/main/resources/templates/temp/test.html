@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>汽车订票系统 用户主页</title>
+    <!-- layui style -->
+    <link th:href="@{https://cdn.bootcss.com/layui/2.5.4/css/layui.css}" rel="stylesheet">
+</head>
+<body>
+<!-- 头部 -->
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">汽车订票系统</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"><a href="#">个人信息</a></li>
+            <li class="layui-nav-item"><a href="#">退出登录</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- 公告栏 -->
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header"><h3>公告栏</h3></div>
+                <div class="layui-card-body">这里是公告内容</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 车票查询 -->
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md8">
+            <div class="layui-card">
+                <div class="layui-card-header"><h3>车票查询</h3></div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="#" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">出发地</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="startPlace" lay-verify="required" placeholder="请输入出发地" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">目的地</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="endPlace" lay-verify="required" placeholder="请输入目的地" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit="" lay-filter="searchTicket">查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- layui js -->
+<script src="https://cdn.bootcss.com/layui/2.5.4/layui.js"></script>
+<!-- 页面功能脚本 -->
+<script type="text/javascript">
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(searchTicket)', function(data){
+            layer.msg('查询中，请稍等...');
+            // 这里写查询逻辑
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

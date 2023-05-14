@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/passgener.css}">
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+</head>
+<body>
+<!-- HTML 代码 -->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            当前位置：
+            <span class="layui-breadcrumb">
+                <a href="">首页</a>
+                <a><cite>文章管理</cite></a>
+                <a><cite>已发布文章</cite></a>
+            </span>
+        </div>
+        <div class="layui-card-body">
+            <!-- 省略其他内容 -->
+        </div>
+    </div>
+</div>
+<script>
+    // JavaScript 代码
+    layui.use('element', function() {
+        var element = layui.element;
+        // 渲染面包屑导航
+        element.render();
+    });
+</script>
+    </body>
+</html>

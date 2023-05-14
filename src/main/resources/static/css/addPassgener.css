@@ -1,0 +1,13 @@
+body{
+    margin: 0;
+    padding: 30px;
+}
+
+#addPassenger{
+    margin: 0 auto;
+    width: 500px;
+    padding: 20px;
+    border: 1px solid #B0C4DE;
+    background: white;
+    border-radius: 5px;
+}

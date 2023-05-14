@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<table>
+  <thead>
+  <tr>
+    <th>Passenger ID</th>
+    <th>User ID</th>
+    <th>User Name</th>
+    <th>Name</th>
+    <th>Identity</th>
+    <th>Gender</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="passenger : ${passengers}">
+    <td th:text="${passenger.passengerId}"></td>
+    <td th:text="${passenger.userId}"></td>
+    <td th:text="${passenger.user.username}"></td>
+    <td th:text="${passenger.name}"></td>
+    <td th:text="${passenger.identity}"></td>
+    <td th:text="${passenger.gender}"></td>
+  </tr>
+  </tbody>
+</table>
+
+
+</body>
+</html>

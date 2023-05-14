@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>500 Internal Server Error</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #68B3C8; /* 设置绿色背景 */
+        }
+
+        .container {
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 50px;
+            color: #333;
+        }
+
+        p {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        a:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="/images/500-error.png" alt="5xx图片"> <!-- 在适当位置添加5xx图片 -->
+    <h1>OOOOOOPS!!!</h1>
+    <p>对不起，服务器出了点问题。工程师正在抢修！</p>
+    <a th:href="@{/loginOut}" onclick="location.reload()" target="_top">退出登录</a>
+</div>
+</body>
+</html>

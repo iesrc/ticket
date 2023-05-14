@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>订单管理</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/passgener.css}">
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+    <script th:src="@{/js/page.js}"></script>
+</head>
+<body>
+<span class="layui-breadcrumb">
+          <a th:href="@{/index}" target="_top" onclick="location.reload()">首页</a>
+          <a><cite>订单管理</cite></a>
+        </span>
+<div style="margin-top: 20px;">
+<form id="myForm" method="post" class="layui-form" th:action="@{/ticket/order/findAllOrders}"
+>
+    <div style="margin-top: 20px;">
+
+        <input id="pageNo" name="pageNo" type="hidden" th:value="${session.pageNo}"/>
+        <input id="pageSize" name="pageSize" type="hidden" th:value="${session.pageSize}"/>
+        <input id="pageTotal" type="hidden" th:value="${session.pageInfo.total}"/>
+    </div>
+
+    <div class="layui-inline">
+        <label class="layui-form-label">所属用户</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${session.usernameInput}" name="usernameInput" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline" >
+        <label class="layui-form-label">支付时间</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${payTimeInput}" name="payTimeInput"
+                   class="layui-input" id="departureTimeInput"
+                   data-random="" autocomplete="off" readonly
+            >
+        </div>
+    </div>
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <button type="submit" class="layui-btn" lay-submit="">
+                <i class="layui-icon" style="font-size: 24px;">&#xe615;</i>搜索
+            </button>
+        </div>
+    </div>
+
+
+</form>
+
+
+<div style="margin-top: 30px;">
+    <table class="layui-table" >
+        <thead >
+        <tr>
+            <th>车牌号码</th>
+            <th>出发地</th>
+            <th>目的地</th>
+            <th>发车时间</th>
+            <th>乘客人数</th>
+            <th>订单金额</th>
+            <th>支付时间</th>
+            <th>所属用户</th>
+            <th>订单状态</th>
+        </tr>
+        </thead>
+        <tbody th:if="${orderListNum == 0}">
+        <tr>
+            <td colspan="9" style="text-align: center;">暂无订单数据
+            </td>
+        </tr>
+        </tbody>
+        <tbody th:if="${orderListNum != 0}">
+        <tr th:each="order : ${orderList}">
+            <td th:text="${order.schedule.busNumber}"></td>
+            <td th:text="${order.route.departure}"></td>
+            <td th:text="${order.route.destination}"></td>
+            <td th:text="${#dates.format(order.schedule.departureTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${order.count}"></td>
+            <td th:text="${order.money}">元</td>
+            <td th:text="${#dates.format(order.payTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${order.user.username}"></td>
+            <td >
+                <button class="layui-btn layui-btn-normal " th:if="${order.status == 0}">未支付</button>
+                <button class="layui-btn layui-btn-normal " th:if="${order.status == '已支付'}">已完成</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="pageDemo" style="text-align: center"></div>
+
+<script>
+    // 在HTML页面上添加Layui的JavaScript代码
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        // 清空时间输入框的值
+        // $('#departureTimeInput').val('');
+        laydate.render({
+            elem: '#departureTimeInput', //绑定的元素
+            type: 'date' ,// 设置时间格式为：年月日
+            min: 0,// 设置可选的最小日期时间，这里是最小值为当前时间（0代表当前时间）。
+            trigger: 'click',// 设置弹出时间选择器的事件为点击
+        });
+    });
+
+</script>
+
+</body>
+</html>

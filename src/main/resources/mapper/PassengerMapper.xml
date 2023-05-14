@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.gdpu.ticket.mapper.PassengerMapper">
+
+    <resultMap id="BaseResultMap" type="edu.gdpu.ticket.entity.Passenger">
+            <id property="passengerId" column="passenger_id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="identity" column="identity" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="VARCHAR"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        passenger_id,user_id,name,
+        identity,gender,is_deleted
+    </sql>
+    <select id="getByUserIdAndIdentityPassenger" resultType="edu.gdpu.ticket.entity.Passenger">
+        select
+        <include refid="Base_Column_List"/>
+        from passenger
+        where user_id = #{userId} and identity = #{identity}
+    </select>
+
+    <select id="selectPassengersByIds" parameterType="java.util.List" resultType="edu.gdpu.ticket.entity.Passenger">
+        SELECT *
+        FROM passenger
+        WHERE passenger_id IN
+        <foreach collection="passengerIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
+</mapper>

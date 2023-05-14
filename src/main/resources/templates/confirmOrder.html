@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>汽车订票系统</title>
+  <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/confirmOrder.css}">
+  <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+  <script th:src="@{/js/confirmsOrder.js}"></script>
+</head>
+<body>
+<div class="layui-container">
+  <h2 style="text-align: center"> 确认订单信息</h2>
+  <hr>
+  <div class="layui-row layui-col-space20">
+    <div class="layui-col-md6">
+      <div class="layui-card">
+        <div class="layui-card-header">所选车次信息</div>
+        <div class="layui-card-body">
+          <p>出发地：<span th:text="${schedule.route.departure}"></span></p>
+          <p>目的地：<span th:text="${schedule.route.destination}"></span></p>
+          <p>发车时间：<span th:text="${#dates.format(schedule.departureTime,'yyyy-MM-dd HH:mm:ss')}"></span></p>
+          <p>行驶时间：<span th:text="${schedule.duration}"></span></p>
+          <p>车牌号：<span th:text="${schedule.busNumber}"></span></p>
+          <p>票价：<span th:text="${schedule.price}"></span></p>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-md6">
+      <div class="layui-card">
+        <div class="layui-card-header">所选乘客信息</div>
+        <div class="layui-card-body">
+          <ul class="layui-timeline">
+            <li class="layui-timeline-item" th:each="passenger : ${passengerList}">
+              <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title" th:text="${passenger.name}"></h3>
+                <p>身份证：<span th:text="${passenger.identity}"></span></p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="layui-row layui-col-space20">
+    <div class="layui-col-md6">
+      <div class="layui-card">
+        <div class="layui-card-header">订单详情</div>
+        <div class="layui-card-body">
+          <p>乘客人数：<span th:text="${passengerTotal}"></span></p>
+          <p>总金额：<span th:text="${totalPrice}"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="layui-row">
+    <div class="layui-col-md12">
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn layui-btn-primary " id="cancelOrderBtn" type="button">取消订单</button>
+          <button class="layui-btn layui-btn-normal" type="button" lay-submit lay-filter="confirmsOrder"
+                  th:data-id="${schedule.scheduleId}" th:data-ids="${passengerIds}"
+                  th:data-totalPrice="${totalPrice}">
+            确认支付
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

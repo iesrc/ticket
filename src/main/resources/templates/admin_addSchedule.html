@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加车次信息</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/passgener.css}">
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+<!--    <script th:src="@{/js/addScheduleAJAX.js}"></script>-->
+</head>
+<body>
+<form id="myForm" class="layui-form" method="post" lay-filter="schedule" action="/ticket/admin/doAddSchedule">
+    <div class="layui-form-item">
+        <label class="layui-form-label">路线</label>
+        <div class="layui-input-block">
+            <select name="routeId"  class="layui-input" lay-verify="required"   ><!--//display=block,其实这里的解决方案就是加上class="layui-input"，而不是display=block，这个属性导致后面出了一大堆问题-->
+                <option value="">请选择路线</option>
+                <!-- 遍历路线列表 -->
+                <!-- 选项的值为路线ID，文本为起点站和终点站的组合 -->
+                <!-- 例如：北京 - 上海 -->
+                <option th:each="route : ${session.routeList}" th:value="${route.routeId}" th:text="${route.departure} + ' - ' + ${route.destination}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发车时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="departureTime" id="date-input" required lay-verify="required|departureTime" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input" readonly>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">行驶时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="duration" required  lay-verify="required|duration" placeholder="请输入行驶时间如：3.5h" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">车牌号码</label>
+        <div class="layui-input-block">
+            <input type="text" name="busNumber" required  lay-verify="required|busNumber" placeholder="请输入车牌号码如：粤A12345" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">座位总数</label>
+        <div class="layui-input-block">
+            <input type="text" name="seatsLeft" required  lay-verify="required|seatsLeft" placeholder="请输入剩余座位个数" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">票价</label>
+        <div class="layui-input-block">
+            <input type="text" name="price" required  lay-verify="required|price" placeholder="请输入票价" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit id="form-submit" lay-filter="submit">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--<div id="layer-msg"></div>-->
+<script>
+    layui.use(['laydate', 'form', 'layer'], function(){
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var layer = layui.layer;
+
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours();
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        var minTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#date-input',//指定渲染的位置，这里是一个ID为 date-input 的元素。
+            type: 'datetime',//指定日期时间选择器的类型，这里是年月日时分秒。
+            min: minTime, // 设置最小可选值为当前日期和时间
+            trigger: 'click',//设置触发日期时间选择器的事件类型，这里是点击触发。
+        });
+
+        // 校验表单
+        form.verify({
+            duration: function(value, item){
+                if(!/^\d+(\.\d+)?h$/.test(value)){
+                    return '行车时间格式错误，请输入如3.5h、4h、5.5h的格式';
+                }
+            },
+            busNumber: function(value, item){
+                if(!/^[\u4E00-\u9FA5][\da-zA-Z]{6}$/.test(value)){
+                    return '车牌号码格式错误，请输入如粤A12345的格式';
+                }
+            },
+            seatsLeft: function(value, item){
+                if(value <= 0 || !/^[1-9]\d*$/.test(value) || value > 150){
+                    return '剩余座位必须是大于0或小于150的整数';
+                }
+            },
+            price:function (value){
+                if (value <= 0) {
+                    return '票价必须大于 0！';
+                }
+                if (!/^([1-9]\d*|0)(\.\d{1,2})?$/.test(value)) {
+                    return '票价格式不正确！';
+                }
+            }
+        });
+
+        //监听表单提交
+        form.on('submit(submit)', function (data) {
+            //form.on('submit(submit)', function (event,data) 就因为他妈的多写了个event参数，就一直错错错，而且即使如此  event.preventDefault();也能正常工作，只是开发者工具里面会报错
+            // 阻止表单的默认提交行为
+            event.preventDefault();
+            console.log(data.field);
+
+            // 发送POST请求
+            $.ajax({
+                url: 'http://localhost:8080/ticket/admin/doAddSchedule',
+                type: 'POST',
+                data: data.field,
+                success: function (result) {
+                    if (result === "SUCCESS") {
+                        layer.alert("新增车次成功", {icon: 1});
+                        setTimeout(function () {
+                            window.location.href = "http://localhost:8080/ticket/admin/showSchedule";
+                        }, 1500)
+                    } else {
+                        layer.alert("新增车次失败，此辆车已存在相同发车时间的路线", {icon: 2});
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // 显示错误消息
+                    layer.msg('添加失败：' + error, {
+                        icon: 2,
+                        time: 1000
+                    });
+                }
+            });
+        });
+
+    });
+
+
+</script>
+</body>
+</html>

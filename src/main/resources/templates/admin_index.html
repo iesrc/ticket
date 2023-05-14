@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+    <title>管理员主页</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+
+</head>
+
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo" style="font-size: 18px"><img src="favicon.ico" height="22px" width="22px">汽车订票后台系统</img></div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-layout-body"><a th:href="@{/adminIndex}" onclick="location.reload()">首页</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="images/science.jpg" class="layui-nav-img">
+                    <label th:text="${session.admin.username}"></label>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{/loginOut}"><i class="layui-icon">&#xe682;</i> 退出登录</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航栏 -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" th:href="@{/ticket/ticket/findAllTickets}" target="mainBody">车票管理</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" th:href="@{/ticket/order/findAllOrders}" target="mainBody">订单管理</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" th:href="@{/ticket/user/findAllUsers}" target="mainBody">会员管理</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" th:href="@{/ticket/admin/showPassenger}" target="mainBody">乘客管理</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" th:href="@{/ticket/route/findAllRoutes}" target="mainBody">路线管理</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" th:href="@{/ticket/admin/showSchedule}" target="mainBody">车次管理</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class=" " th:href="@{/ticket/news/findAllNews}" target="mainBody">公告管理</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <iframe src="http://localhost:8080/adminMain" name="mainBody" style="width: 100%;height: 100%;">
+
+        </iframe>
+    </div>
+
+    <div th:include="fragments/footer :: footer"></div>
+</div>
+<script src="layui/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function() {
+        var element = layui.element;
+
+    });
+</script>
+</body>
+
+</html>

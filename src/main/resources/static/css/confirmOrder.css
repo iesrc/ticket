@@ -1,0 +1,17 @@
+body{
+    margin: 0;
+    padding: 30px;
+}
+.layui-card-header {
+    background-color: #009688;
+    color: #fff;
+    border-radius: 3px 3px 0 0;
+    padding: 10px;
+}
+
+.layui-card-body {
+    background-color: #f2f9fd;
+    padding: 20px;
+    border-radius: 3px;
+    border: 1px solid #e6e6e6;
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"> <!-- LayUI的CSS文件 -->
+    <link rel="stylesheet" href="/css/login.css">
+    <script type="text/javascript" src="/js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="/layui/layui.js"></script>
+    <script type="text/javascript" src="/js/register.js"></script>
+</head>
+
+<body background="/images/bus_station.jpg" style="background-size: cover">
+<div id="loginDiv">
+    <div id="loginDiv_1">
+        <h1 style="text-align: center;color:#009688;">欢迎注册汽车订票系统</h1>
+    </div>
+    <div id="loginDiv_2">
+        <form class="layui-form" id="register-form" action="doRegister" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="layui-icon">&#xe66f;</i>&nbsp;用户名：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" lay-verify="username" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="layui-icon">&#xe673;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" lay-verify="password" lay-reqtext="密码是必填项，岂能为空？" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="layui-icon">&#xe612;</i>&nbsp;手机号：</label>
+                <div class="layui-input-block">
+                    <input type="tel" name="phone" lay-verify="phone" autocomplete="off" placeholder="请输入手机号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="layui-icon">&#xe618;</i>&nbsp;     邮箱：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" lay-verify="email" autocomplete="off" placeholder="请输入邮箱" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" >
+                    <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1" onclick="register()">注册</button>
+                    <!--                        <button type="submit" class="layui-btn layui-btn-warm">注册</button>-->
+                    <a th:href="@{/login}" class="layui-btn layui-btn-warm">返回</a>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <span th:text="${errorMsg}"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+    layui.use(['form', 'layedit', 'laydate', 'layer'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //自定义验证规则
+        form.verify({
+            username: function(value){
+                if(value.length < 2){
+                    return '用户名长度不能小于2啊';
+                }
+            }
+            ,password: function(value){
+                if(value.length < 4){
+                    return '密码不能小于4啊';
+                }
+            }
+            ,pass: function(value){
+                if(value.length < 4){
+                    return '验证码输入错误';
+                }
+            }
+            ,phone: function (value) {
+                if(!/^1[3456789]\d{9}$/.test(value)){
+                    return '请输入正确的手机号码';
+                }
+            }
+            ,email: function (value) {
+                if(!/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/.test(value)){
+                    return '请输入正确的邮箱地址';
+                }
+            }
+        });
+
+    });
+</script>
+
+
+</body>
+</html>

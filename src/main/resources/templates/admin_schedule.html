@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>车次管理</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/passgener.css}">
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+
+    <!-- 引入Laydate插件的js文件 -->
+<!--    <script src="/layui/laydate/laydate.js"></script>-->
+    <script th:src="@{/js/page.js}"></script>
+<!--    <script th:src="@{/js/addSchedule.js}"></script>-->
+    <script th:src="@{/js/deleteSchedule.js}"></script>
+</head>
+<body>
+<span class="layui-breadcrumb">
+          <a th:href="@{/index}" target="_top" onclick="location.reload()">首页</a>
+          <a><cite>车次管理</cite></a>
+        </span>
+<form id="myForm" method="post" class="layui-form" th:action="@{/ticket/admin/showSchedule}"
+>
+    <div style="margin-top: 20px;">
+
+        <input id="pageNo" name="pageNo" type="hidden" th:value="${session.pageNo}"/>
+        <input id="pageSize" name="pageSize" type="hidden" th:value="${session.pageSize}"/>
+        <input id="pageTotal" type="hidden" th:value="${session.pageInfo.total}"/>
+    </div>
+
+    <div class="layui-inline">
+        <label class="layui-form-label">出发地</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${session.departureInput}" name="departureInput" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">目的地</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${session.destinationInput}" name="destinationInput" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline" >
+        <label class="layui-form-label">出发时间</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${departureTimeInput}" name="departureTimeInput"
+                   class="layui-input" id="departureTimeInput"
+                   data-random="" autocomplete="off" readonly
+            >
+            <!--onchange="submitForm()"            lay-key="my-laydate"-->
+        </div>
+    </div>
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <button type="submit" class="layui-btn" lay-submit="">
+                <i class="layui-icon" style="font-size: 24px;">&#xe615;</i>搜索
+            </button>
+        </div>
+    </div>
+
+    <!--<select name="routeId" lay-verify="required">
+        <option value="">请选择路线</option>
+        <th:block th:each="route : ${session.routeList}">
+            <option th:value="${route.routeId}" th:text="${route.departure} + ' - ' + ${route.destination}"></option>
+        </th:block>
+    </select>-->
+
+
+
+
+
+</form>
+
+
+<div style="margin-top: 30px;">
+    <table class="layui-table" >
+        <thead >
+        <tr>
+            <th colspan="9" class="layui-btn-container">
+<!--                <button th:class="'layui-btn layui-bg-blue'"  lay-event="add" th:data-routeList="${session.routeList}"><a th:href="@{/ticket/admin/addSchedule}" target="mainBody">添加车次</a></button>-->
+                <a class="layui-btn layui-bg-blue" th:href="@{/ticket/admin/addSchedule}" target="mainBody">添加车次</a>
+        </tr>
+        <tr>
+            <th>
+                <input id="selectAll" type="checkbox" name="" title="全选" lay-skin="primary"> ID
+            </th>
+            <th>车牌号码</th>
+            <th>出发地</th>
+            <th>目的地</th>
+            <th>发车时间</th>
+            <th>行驶时间</th>
+            <th>余票</th>
+            <th>票价</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody th:if="${scheduleNum == 0}">
+        <tr>
+            <td colspan="8" style="text-align: center;">暂无车次数据 ，请点击<a class="layui-btn layui-bg-blue" th:href="@{/ticket/admin/addSchedule}" target="mainBody">添加车次</a>
+            </td>
+        </tr>
+        </tbody>
+        <tbody th:if="${scheduleNum != 0}">
+        <tr th:each="schedule : ${scheduleList}">
+            <td>
+                <input  class="mySelect" type="checkbox" name="infoIds" title="1" lay-skin="primary"
+                        th:text="${schedule.scheduleId}">
+            </td>
+            <td th:text="${schedule.busNumber}"></td>
+            <td th:text="${schedule.route.departure}"></td>
+            <td th:text="${schedule.route.destination}"></td>
+            <td th:text="${#dates.format(schedule.departureTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${schedule.duration}"></td>
+            <td th:text="${schedule.seatsLeft}"></td>
+            <td th:text="${schedule.price}"></td>
+            <td class="layui-btn-container">
+                <!--<button class="layui-btn layui-btn-warm" th:data-id="${schedule.scheduleId}"
+                        th:data-routeId="${schedule.routeId}"
+                         th:data-pageNo="${session.pageNo}" lay-event="edit">
+                    编辑
+                </button>-->
+                <a class="layui-btn layui-btn-warm" th:href="@{/ticket/admin/updateSchedule(pageNo=${session.pageNo}, scheduleId=${schedule.scheduleId}, routeId=${schedule.route.routeId})}">编辑</a>
+
+
+                <button data-th-method="offset" data-th-type="t" class="layui-btn layui-btn-danger"
+                        th:onclick="'deleteSchedule(' + ${schedule.scheduleId} +')'"
+                        th:class=" 'layui-btn layui-btn-danger'">删除</button>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="pageDemo" style="text-align: center"></div>
+
+<script>
+    // 在HTML页面上添加Layui的JavaScript代码
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        // 清空时间输入框的值
+        // $('#departureTimeInput').val('');
+        laydate.render({
+            elem: '#departureTimeInput', //绑定的元素
+            type: 'date' ,// 设置时间格式为：年月日
+            min: 0,// 设置可选的最小日期时间，这里是最小值为当前时间（0代表当前时间）。
+            trigger: 'click',// 设置弹出时间选择器的事件为点击
+        });
+    });
+
+    /*function submitForm() {
+        document.getElementById("myForm").submit();
+    }*/
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var departureTimeInput = document.getElementById("departureTimeInput");
+        departureTimeInput.setAttribute("data-random", Math.floor(Math.random() * 100));
+    });
+</script>
+
+</body>
+</html>

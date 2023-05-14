@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/passgener.css}">
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/page.js}"></script>
+    <script th:src="@{/js/searchResult.js}"></script>
+</head>
+<body>
+<form id="myForm" method="post" class="layui-form" th:action="@{/ticket/ticket/showSchedule1}"
+>
+    <div style="margin-top: 20px;">
+
+        <input id="pageNo" name="pageNo" type="hidden" th:value="${session.pageNo}"/>
+        <input id="pageSize" name="pageSize" type="hidden" th:value="${session.pageSize}"/>
+        <input id="pageTotal" type="hidden" th:value="${session.pageInfo.total}"/>
+    </div>
+
+    <div class="layui-inline">
+        <label class="layui-form-label">出发地</label>
+        <div class="layui-input-inline">
+            <input type="text"  required readonly lay-verify="required" th:value="${session.departureInput}" name="departureInput" class="layui-input" placeholder="请输入出发地" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">目的地</label>
+        <div class="layui-input-inline">
+            <input type="text"  required readonly lay-verify="required" th:value="${session.destinationInput}" name="destinationInput" class="layui-input" placeholder="请输入目的地" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-inline" >
+        <label class="layui-form-label">出发时间</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${departureTimeInput}" name="departureTimeInput"
+                   class="layui-input" id="departureTimeInput"
+                   data-random="" autocomplete="off" placeholder="请选择出发时间" readonly   lay-verify="required"
+            >
+            <!--onchange="submitForm()"            lay-key="my-laydate"-->
+        </div>
+    </div>
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <button type="submit" class="layui-btn" >
+                <i class="layui-icon" style="font-size: 24px;">&#xe615;</i>搜索
+            </button>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <table class="layui-table" >
+            <thead >
+            <tr>
+                <th>车牌号码</th>
+                <th>出发地</th>
+                <th>目的地</th>
+                <th>发车时间</th>
+                <th>行驶时间</th>
+                <th>余票</th>
+                <th>票价</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody th:if="${scheduleNum == 0}">
+            <tr>
+                <td colspan="9" style="text-align: center;">暂无车次数据
+                </td>
+            </tr>
+            </tbody>
+            <tbody th:if="${scheduleNum != 0}">
+            <tr th:each="schedule : ${scheduleList}">
+                <td th:text="${schedule.busNumber}"></td>
+                <td th:text="${schedule.route.departure}"></td>
+                <td th:text="${schedule.route.destination}"></td>
+                <td th:text="${#dates.format(schedule.departureTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${schedule.duration}"></td>
+                <td th:text="${schedule.seatsLeft}"></td>
+                <td th:text="${schedule.price}"></td>
+                <td class="layui-btn-container">
+                    <!--                <a 	class="layui-btn layui-btn-normal" th:href="@{/ticket/admin/updateSchedule(pageNo=${session.pageNo}, scheduleId=${schedule.scheduleId}, routeId=${schedule.route.routeId})}">预定</a>-->
+                    <a 	class="layui-btn layui-btn-normal bookBtn" th:data-price="${schedule.price}" th:data-id="${schedule.scheduleId}">预定</a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+<form id="booking-form" method="POST" th:action="@{/ticket/order/confirmOrder1}">
+    <!-- 隐藏的表单域，用于存放选中的乘客ID和行程ID -->
+    <input type="hidden" name="passengerIds" id="passengerIds" value="">
+    <input type="hidden" name="scheduleId" id="scheduleId" value="">
+    <input type="hidden" name="price" id="price" value="">
+
+</form>
+<div id="pageDemo" style="text-align: center"></div>
+
+<script type="text/javascript">
+    layui.use(['layer', 'table', 'jquery'], function(){
+        var layer = layui.layer;
+        var table = layui.table;
+        var $ = layui.jquery;
+        //获取选中的乘客列表
+        var passengerIds = [];
+
+        //渲染乘客列表数据
+        function renderPassengerList(data,scheduleId,price){
+            if (data.length <= 0) { // 无乘客数据 style样式整体居中显示
+                var html = '<div class="layui-text" style="display: flex; justify-content: center; align-items: center; height: 100%;">您还没有添加乘客，请先<a href="/ticket/passenger/addPassenger">添加乘客</a></div>';
+                layer.open({
+                    type: 1,
+                    title: '请选择乘客',
+                    area: ['430px', '300px'],
+                    content: html
+                });
+            } else {
+                var html = '<table class="layui-table"><thead><tr><th>姓名</th><th>身份证号</th><th>选择</th></tr></thead>';
+                html += '<tbody>';
+                for(var i=0; i<data.length; i++){
+                    html += '<tr>';
+                    html += '<td>'+data[i].name+'</td>';
+                    html += '<td>'+data[i].identity+'</td>';
+                    html += '<td><input type="checkbox"  name="passengerCheckbox" value="'+data[i].passengerId+'"></td>';
+                    html += '</tr>';
+                }
+                html += '</tbody></table>';
+
+                //打开弹出层
+                layer.open({
+                    type: 1,
+                    title: '请选择乘客',
+                    content: html,
+                    area: ['430px', '300px'],
+                    btn: ['确定', '取消'],
+                    yes: function(index, layero){
+
+                        console.log("scheduleId" + scheduleId);
+                        $('input[name="passengerCheckbox"]:checked').each(function(){
+                            passengerIds.push($(this).val());
+                        });
+                        console.log("passengerIds:" + passengerIds);
+                        if (passengerIds.length <= 0) { // 未选择乘客
+                            layer.msg('请至少选择一个乘客');
+                            return false;
+                        }
+                        if (passengerIds.length >1 ) { // 未选择乘客
+                            layer.msg('改签只能选择一个乘客');
+                            passengerIds = [];
+                            return false;
+                        }
+
+                        // 发送请求到后端，判断余票数量是否足够
+                        $.ajax({
+                            type: 'POST',
+                            url: '/ticket/schedule/getRemainingSeats',
+                            data: {scheduleId: scheduleId},
+                            success: function(data){
+                                //余票数量大于等于需要的座位数量，提交乘客选择列表，进行后续处理
+                                if (data >= passengerIds.length) {
+                                    //TODO：提交乘客选择列表，进行后续处理,使用隐藏表单提交乘客 ID 和行程 ID
+                                    // 填入乘客 ID 和行程 ID
+                                    $('#passengerIds').val(passengerIds.join(','));
+                                    $('#scheduleId').val(scheduleId);
+                                    $('#price').val(price);
+                                    // 提交表单
+                                    $('#booking-form').submit();
+                                    layer.closeAll();
+                                } else {
+                                    //余票数量不足，提示用户
+                                    layer.msg('余票不足，请重新选择', {time: 2000})
+                                    console.log("scheduleId" + scheduleId);
+                                    // layer.closeAll();
+                                    passengerIds = [];
+                                }
+                            },
+                            error: function(){
+                                layer.msg('获取余票信息失败，请稍后再试');
+                            }
+                        });
+
+                        //TODO：提交乘客选择列表，进行后续处理
+                        // layer.closeAll();
+                    }
+                });
+            }
+        }
+
+        $('.bookBtn').on('click', function(){
+            var scheduleId = $(this).data('id');
+            var price = $(this).data('price');
+            //发送ajax请求
+            $.ajax({
+                type: 'POST',
+                url: '/ticket/passenger/getPassengerList',
+                success: function(data){
+                    //渲染乘客列表
+                    renderPassengerList(data, scheduleId,price);
+                }
+            });
+        });
+
+    });
+</script>
+
+</body>
+</html>

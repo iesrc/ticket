@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.gdpu.ticket.mapper.TicketMapper">
+
+    <resultMap id="BaseResultMap" type="edu.gdpu.ticket.entity.Ticket">
+            <id property="ticketId" column="ticket_id" jdbcType="INTEGER"/>
+            <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+            <result property="passengerId" column="passenger_id" jdbcType="INTEGER"/>
+            <result property="canModify" column="can_modify" jdbcType="TINYINT"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ticket_id,order_id,passenger_id,
+        can_modify,is_deleted
+    </sql>
+</mapper>

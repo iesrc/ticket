@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>汽车订票</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <script th:src="@{/layui/layui.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+        // 轮播图
+        layui.use('carousel', function(){
+            var carousel = layui.carousel;
+            //建造实例
+            carousel.render({
+                elem: '#test1'
+                ,width: '100%' //设置容器宽度
+                ,height: '400px'
+                ,interval: 3000
+            });
+        });
+        // 搜索车票
+        $(function() {
+            $("#search-btn").click(function() {
+                var from = $('input[name="from"]').val();
+                var to = $('input[name="to"]').val();
+                var date = $('input[name="date"]').val();
+                console.log(from, to, date);
+                // TODO: 需要编写实现搜索的JS代码
+            });
+        });
+    </script>
+</head>
+<body>
+<!-- 头部 -->
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md6">
+            <h1>汽车订票系统</h1>
+        </div>
+        <div class="layui-col-md6">
+            <ul class="layui-nav" lay-filter="">
+                <li class="layui-nav-item"><a href="">个人中心</a></li>
+                <li class="layui-nav-item"><a href="">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 轮播图 -->
+<div class="layui-carousel" id="test1">
+    <div carousel-item>
+        <div><img src="https://www.layui.com/adminimages/carousel/1.jpg"></div>
+    </div>
+    <div carousel-item>
+        <div><img src="https://www.layui.com/adminimages/carousel/2.jpg"></div>
+    </div>
+    <div carousel-item>
+        <div><img src="https://www.layui.com/adminimages/carousel/3.jpg"></div>
+    </div>
+</div>
+
+<!-- 搜索车票 -->
+<div class="layui-container">
+    <hr>
+    <form class="layui-form" action="">
+        <div class="layui-row">
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">出发地</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="from" required  lay-verify="required" placeholder="请输入出发地" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">目的地</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="to" required  lay-verify="required" placeholder="请输入目的地" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">出发日期</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="date" required  lay-verify="required" placeholder="请选择出发日期" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="search-btn" lay-submit lay-filter="formDemo">搜索</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 公告 -->
+<div class="layui-container">
+    <hr>
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <h2>公告栏</h2>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="layui-timeline">
+                <!-- 公告列表 -->
+                <div class="layui-timeline-item" th:each="notice : ${notices}">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title" th:text="${notice.title}"></h3>
+                        <p th:text="${notice.content}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

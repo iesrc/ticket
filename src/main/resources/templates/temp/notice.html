@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>折叠展开示例</title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.7/css/layui.min.css">
+</head>
+<body>
+
+<div class="layui-container" style="margin-top: 20px;">
+
+  <!-- 公告列表 -->
+  <table id="noticeTable" lay-filter="noticeTable"></table>
+
+  <!-- 公告详情 -->
+  <div id="noticeDetail" class="layui-collapse" style="display: none;"></div>
+
+</div>
+
+<!-- 引入layui.js -->
+<script src="https://cdn.staticfile.org/layui/2.5.7/layui.min.js"></script>
+<script>
+  layui.use(['table', 'jquery'], function() {
+    var table = layui.table,
+            $ = layui.jquery;
+
+    // 渲染公告列表
+    <![CDATA[
+    table.render({
+      elem: '#noticeTable',
+      url: '/notice/list',
+      page: true,
+      cols: [[
+        {field: 'title', title: '标题'},
+        {field: 'saveTime', title: '发布时间'},
+        {field: 'author', title: '发布人'},
+        {title: '操作', align: 'center', toolbar: '#toolbar'}
+      ]],
+      parseData: function(res){
+        return {
+          "code": res.code,
+          "msg": res.msg,
+          "count": res.data.total,
+          "data": res.data.records
+      }
+      }
+    });
+    ]]>
+    // 监听公告列表工具条
+    table.on('tool(noticeTable)', function(obj){
+      var data = obj.data;
+      if(obj.event === 'detail'){
+        // 显示公告详情
+        $('#noticeDetail').empty().append(
+                '<div class=\"layui-card\">\n' +
+                '  <div class=\"layui-card-header\">' + data.title + '</div>\n' +
+                '  <div class=\"layui-card-body\">\n' +
+                '    <div class=\"layui-collapse\">\n' +
+                '      <div class=\"layui-colla-item\">\n' +
+                '        <h2 class=\"layui-colla-title\">公告内容</h2>\n' +
+                '        <div class=\"layui-colla-content\">\n' +
+                '          <p>' + data.content + '</p>\n' +
+                '        </div>\n' +
+                '      </div>\n' +
+                '    </div>\n' +
+                '    <div style=\"margin-top: 10px;\">\n' +
+                '      <p>发布时间：' + data.saveTime + '</p>\n' +
+                '      <p>发布人：' + data.author + '</p>\n' +
+                '    </div>\n' +
+                '  </div>\n' +
+                '</div>'
+        );
+        $('#noticeDetail').show();
+      }
+    });
+
+  });
+</script>
+
+<!-- 公告列表工具条模板 -->
+<script type="text/html" id="toolbar">
+  <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+</script>
+
+</body>
+</html>

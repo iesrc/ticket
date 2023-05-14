@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>车票管理</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/ticket.css}">
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+    <script th:src="@{/js/page.js}"></script>
+    <script th:src="@{/js/ticket.js}"></script>
+    <script th:src="@{/js/refundTicket.js}"></script>
+    <script th:src="@{/js/changeTicket.js}"></script>
+</head>
+<body>
+<form id="myForm" method="post" class="layui-form" th:action="@{/ticket/ticket/list}"
+>
+    <span class="layui-breadcrumb">
+          <a th:href="@{/index}" target="_top" onclick="location.reload()">首页</a>
+          <a><cite>车票管理</cite></a>
+        </span>
+    <div style="margin-top: 20px;">
+
+        <input id="pageNo" name="pageNo" type="hidden" th:value="${session.pageNo}"/>
+        <input id="pageSize" name="pageSize" type="hidden" th:value="${session.pageSize}"/>
+        <input id="pageTotal" type="hidden" th:value="${session.pageInfo.total}"/>
+    </div>
+
+    <div class="layui-inline">
+        <label class="layui-form-label">出发地</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${session.departureInput}" name="departureInput" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">目的地</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${session.destinationInput}" name="destinationInput" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline" >
+        <label class="layui-form-label">出发时间</label>
+        <div class="layui-input-inline">
+            <input type="text" th:value="${departureTimeInput}" name="departureTimeInput"
+                   class="layui-input" id="departureTimeInput"
+                   data-random="" autocomplete="off" readonly>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <button type="submit" class="layui-btn" lay-submit="">
+                <i class="layui-icon" style="font-size: 24px;">&#xe615;</i>搜索
+            </button>
+        </div>
+    </div>
+</form>
+
+
+<div style="margin-top: 30px;">
+    <table class="layui-table" >
+        <thead >
+        <tr>
+            <th>车牌号码</th>
+            <th>出发地</th>
+            <th>目的地</th>
+            <th>发车时间</th>
+            <th>行驶时长</th>
+            <th>乘客姓名</th>
+            <th>票价</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody th:if="${ticketNum == 0}">
+        <tr>
+            <td colspan="8" style="text-align: center;">暂无车票数据</td>
+        </tr>
+        </tbody>
+        <tbody th:if="${ticketNum != 0}">
+        <tr th:each="ticket : ${ticketList}">
+            <td th:text="${ticket.schedule.busNumber}"></td>
+            <td th:text="${ticket.route.departure}"></td>
+            <td th:text="${ticket.route.destination}"></td>
+            <td th:text="${#dates.format(ticket.schedule.departureTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${ticket.schedule.duration}"></td>
+            <td th:text="${ticket.passenger.name}"></td>
+            <td th:text="${ticket.schedule.price}"></td>
+            <td class="layui-btn-container">
+                <button class="layui-btn " th:data-id="${ticket.ticketId}" th:data-price="${ticket.schedule.price}"
+                        th:data-departure="${#dates.format(ticket.schedule.departureTime, 'yyyy-MM-dd HH:mm:ss')}"
+                         th:data-pageNo="${session.pageNo}" lay-event="refund"
+                th:classappend="${ticket.isExpired ? 'layui-btn-disabled' : 'layui-btn-warm'}"
+                        th:disabled="${ticket != null && ticket.isExpired}">
+                    退票
+                </button>
+                <button data-th-method="offset" data-th-type="t" class="layui-btn layui-btn-danger"
+                        th:data-id="${ticket.ticketId}" th:data-price="${ticket.schedule.price}"
+                        th:data-departureTime="${#dates.format(ticket.schedule.departureTime, 'yyyy-MM-dd HH:mm:ss')}"
+                        th:data-pageNo="${session.pageNo}" th:data-departure="${ticket.route.departure}"
+                        th:data-destination="${ticket.route.destination}" lay-event="change"
+                        th:class=" 'layui-btn '"
+                        th:classappend="${ticket.isExpired ? 'layui-btn-disabled' : 'layui-btn-danger'}"
+                        th:disabled="${ticket != null && ticket.isExpired}"
+                        th:if="${ticket.canModify == 0}">改签</button>
+                <button data-th-method="offset" data-th-type="t" class="layui-btn layui-btn-danger layui-btn-disabled"
+                        th:if="${ticket.canModify != 0}"
+                        disabled>改签</button>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="pageDemo" style="text-align: center"></div>
+
+<form id="change-form" th:action="@{/ticket/ticket/showChangeSchedule}" method="post">
+    <input type="hidden" name="ticketId" value="">
+    <input type="hidden" name="departure" value="">
+    <input type="hidden" name="destination" value="">
+    <input type="hidden" name="price" value="">
+</form>
+
+<script>
+
+</script>
+
+
+
+</body>
+</html>

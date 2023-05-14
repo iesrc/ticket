@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汽车订票系统</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <style>
+        .layui-carousel {
+            margin-top: 30px;
+        }
+
+        .layui-carousel img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .layui-form-item {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layui-carousel" id="carousel">
+    <div carousel-item>
+        <div><img src="images/img_1.png"></div>
+        <div><img src="images/img_5.png"></div>
+        <div><img src="images/img_8.png"></div>
+    </div>
+</div>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">出发地</label>
+            <div class="layui-input-inline">
+                <input type="text" name="start" required lay-verify="required" placeholder="请输入出发地" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">目的地</label>
+            <div class="layui-input-inline">
+                <input type="text" name="destination" required lay-verify="required" placeholder="请输入目的地" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">出发时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="time" id="time" required lay-verify="required" placeholder="请选择时间" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn" lay-submit lay-filter="search">查询</button>
+        </div>
+    </div>
+</form>
+
+<table class="layui-table">
+    <colgroup>
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col>
+    </colgroup>
+    <thead>
+    <tr>
+        <th>车次编号</th>
+        <th>出发地</th>
+        <th>目的地</th>
+        <th>时间</th>
+        <th>价格</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 车次信息列表 -->
+    <tr>
+        <td>C1101</td>
+        <td>上海</td>
+        <td>北京</td>
+        <td>2023-03-25</td>
+        <td>￥760</td>
+        <td>
+            <a href="#" class="layui-btn layui-btn-xs">预定</a>
+        </td>
+    </tr>
+    <tr>
+        <td>C1202</td>
+        <td>上海</td>
+        <td>广州</td>
+        <td>2023-03-26</td>
+        <td>￥350</td>
+        <td>
+            <a href="#" class="layui-btn layui-btn-xs">预定</a>
+        </td>
+    </tr>
+    <tr>
+        <td>C1303</td>
+        <td>上海</td>
+        <td>深圳</td>
+        <td>2023-03-27</td>
+        <td>￥500</td>
+        <td>
+            <a href="#" class="layui-btn layui-btn-xs">预定</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    // 轮播图
+    layui.use(['carousel'], function () {
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#carousel',
+            width: '100%',
+            height: '300px',
+            arrow: 'always'
+        });
+    });
+
+    // 时间选择器
+    layui.use(['laydate', 'form'], function () {
+        var laydate = layui.laydate;
+        var form = layui.form;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#time', //指定元素
+            type: 'date'
+        });
+
+        //监听表单提交
+        form.on('submit(search)', function (data) {
+            //处理表单提交逻辑
+            console.log(data.field);
+            return false; //防止页面跳转
+        });
+    });
+</script>
+</body>
+
+</html>

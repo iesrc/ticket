@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <script type="text/javascript" src="/layui/layui.js">
+
+    </script>
+
+</head>
+<body background="/images/bus.jpg" style="background-size: cover">
+
+    <div id="loginDiv">
+        <div id="loginDiv_1">
+            <h1 style="text-align: center;color:black;">欢迎登录汽车订票系统</h1>
+        </div>
+        <div id="loginDiv_2">
+            <form class="layui-form" action="doLogin" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><i class="layui-icon">&#xe66f;</i>&nbsp;用户名：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" lay-verify="username" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><i class="layui-icon">&#xe673;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="password" lay-verify="password" lay-reqtext="密码是必填项，岂能为空？" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><i class="layui-icon">&#xe679;</i>&nbsp;验证码：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="keyCord" lay-verify="pass"  autocomplete="off" class="layui-input">
+                    </div>
+                    <div >
+                        <img src="/defaultKaptcha" onclick="this.src='/defaultKaptcha?time' + new Date()">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择身份：</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="identity" value="0" title="用户" checked="">
+                        <input type="radio" name="identity" value="1" title="管理员">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block" >
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">登录</button>
+<!--                        <button type="submit" class="layui-btn layui-btn-warm">注册</button>-->
+                        <a th:href="@{/register}" class="layui-btn layui-btn-warm">注册</a>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <span th:text="${errorMsg}"></span>
+                    </div>
+                </div>
+                <div th:include="fragments/footer :: footer"></div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function(){
+            var form = layui.form
+                ,layer = layui.layer
+                ,layedit = layui.layedit
+                ,laydate = layui.laydate;
+
+
+
+            //自定义验证规则
+            form.verify({
+                username: function(value){
+                    if(value.length < 2){
+                        return '用户名长度不能小于2啊';
+                    }if (!/^[\u4e00-\u9fa5a-zA-Z]+$/.test(value)) {
+                        return '用户名只能包含中文或英文字母';
+                    }
+                }
+                ,password: function(value){
+                    if(value.length < 4){
+                        return '密码长度不能小于4啊';
+                    }
+                }
+                ,pass: function(value){
+                    if(value.length < 4){
+                        return '验证码长度不能小于4啊';
+                    }
+                }
+            });
+
+        });
+
+    </script>
+</body>
+</html>

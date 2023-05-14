@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员首页</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.6/css/layui.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .layui-container {
+            padding-top: 20px;
+            background-color: #fff;
+            background-image: linear-gradient(to bottom right, #4CAF50, #28B463);
+        }
+
+        .layui-col-md12 {
+            padding: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .layui-timeline-axis {
+            position: absolute;
+        }
+
+        .layui-timeline-content {
+            padding: 0 20px;
+            position: relative;
+            margin-left: 50px;
+        }
+
+        .layui-timeline-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .layui-text {
+            font-size: 14px;
+            line-height: 1.8em;
+            color: #666666;
+        }
+    </style>
+</head>
+<body>
+<!-- 公告 -->
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <h2 style="text-align: center;">系统公告栏</h2>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="layui-timeline">
+                <!-- 公告列表 -->
+                <div class="layui-timeline-item" th:each="notice : ${session.notices}">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title" th:text="${notice.title}"></h3>
+                        <div class="layui-text" th:text="'发布时间：'+${#dates.format(notice.saveTime, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                        <p th:text="${notice.content}"></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 引入layui -->
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+</body>
+</html>

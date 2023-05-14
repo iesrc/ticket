@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>汽车订票系统用户主页</title>
+  <!-- LayUI的CSS文件 -->
+  <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.6.9/css/layui.min.css">
+</head>
+<body>
+<div class="layui-container">
+  <div class="layui-row">
+    <div class="layui-col-md-4">
+      <div class="layui-card">
+        <div class="layui-card-header">公告栏</div>
+        <div class="layui-card-body">
+          <ul class="layui-timeline">
+            <li class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">2023年3月22日</h3>
+                <p>感谢您使用我们的汽车订票系统，为了更好的服务您，请您关注我们的最新公告。</p>
+              </div>
+            </li>
+            <li class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">2023年3月21日</h3>
+                <p>新增加多条线路，欢迎您前来体验。</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-md-8">
+      <div class="layui-card">
+        <div class="layui-card-header">车票查询</div>
+        <div class="layui-card-body">
+          <form class="layui-form" action="" method="post">
+            <div class="layui-form-item">
+              <label class="layui-form-label">出发城市</label>
+              <div class="layui-input-block">
+                <input type="text" name="startCity" required  lay-verify="required" placeholder="请输入出发城市" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">到达城市</label>
+              <div class="layui-input-block">
+                <input type="text" name="endCity" required  lay-verify="required" placeholder="请输入到达城市" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit lay-filter="formDemo">查询</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="layui-card">
+        <div class="layui-card-header">查询结果</div>
+        <div class="layui-card-body">
+          <table class="layui-table">
+            <colgroup>
+              <col width="150">
+              <col width="150">
+              <col width="150">
+              <col>
+            </colgroup>
+            <thead>
+            <tr>
+              <th>车次</th>
+              <th>出发城市</th>
+              <th>到达城市</th>
+              <th>发车时间</th>
+              <th>票价</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="ticketList">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LayUI的JS文件 -->
+<script src="https://cdn.staticfile.org/layui/2.6.9/layui.min.js" ></script>
+
+<!-- 发送Ajax请求获取车票信息，并将结果展示在页面上 -->
+<script>
+  layui.use('form', function(){
+    var form = layui.form;
+
+    // 监听表单提交事件
+    form.on('submit(formDemo)', function(data){
+      // 发送Ajax请求
+      $.ajax({
+        type: "POST",
+        url: "/ticket/search",
+        data: data.field,
+        success: function(result){
+          // 将车票信息展示在页面上
+          var ticketList = $("#ticketList");
+          ticketList.empty();
+          $.each(result, function(index, ticket){
+            var tr = $("<tr></tr>");
+            tr.append("<td>"+ticket.trainCode+"</td>");
+            tr.append("<td>"+ticket.startCity+"</td>");
+            tr.append("<td>"+ticket.endCity+"</td>");
+            tr.append("<td>"+ticket.departureTime+"</td>");
+            tr.append("<td>"+ticket.price+"</td>");
+            tr.append("<td><button class='layui-btn layui-btn-sm layui-btn-normal'>预订</button></td>");
+            ticketList.append(tr);
+          });
+        },
+        error: function(error){
+          console.log(error);
+        }
+      });
+      return false;
+    });
+  });
+</script>
+
+</body>
+</html>

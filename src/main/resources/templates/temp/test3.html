@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:lay="http://www.layui.com">
+<head>
+    <meta charset="UTF-8">
+    <title>用户主页</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+    <script th:src="@{/layui/layui.js}"></script>
+</head>
+<body>
+<!-- 导航栏 -->
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <ul class="layui-nav layui-bg-blue">
+                <li class="layui-nav-item">
+                    <a href="#">用户中心</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="#">消息</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="#">设置</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="#">基本资料</a></dd>
+                        <dd><a href="#">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="#">退出</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 公告轮播 -->
+<div class="layui-container" style="margin-top: 20px;">
+    <div class="layui-carousel layadmin-carousel layadmin-dataview" lay-anim=""
+         lay-indicator="inside" lay-arrow="none" lay-width="100%">
+        <div carousel-item="">
+            <div>
+                <div class="layui-carousel-item">
+                    <div class="layui-text" style="text-align: center;">
+                        <h2>这是标题1</h2>
+                        <p><span>发布时间：2022-12-01</span></p>
+                        <p><span>内容：这是内容1</span></p>
+                    </div>
+                </div>
+                <div class="layui-carousel-item">
+                    <div class="layui-text" style="text-align: center;">
+                        <h2>这是标题2</h2>
+                        <p><span>发布时间：2022-12-02</span></p>
+                        <p><span>内容：这是内容2</span></p>
+                    </div>
+                </div>
+                <div class="layui-carousel-item">
+                    <div class="layui-text" style="text-align: center;">
+                        <h2>这是标题3</h2>
+                        <p><span>发布时间：2022-12-03</span></p>
+                        <p><span>内容：这是内容3</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 搜索车票 -->
+<div class="layui-container" style="margin-top: 20px;">
+    <form class="layui-form" action="" lay-filter="form" th:action="@{/search}" th:object="${searchForm}">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">出发地</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="departure" placeholder="请输入出发地" lay-verify="required"
+                           autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">目的地</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="destination" placeholder="请输入目的地" lay-verify="required"
+                           autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">出发日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="departureDate" id="date-picker" placeholder="yyyy-MM-dd"
+                           lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i>搜索车票</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['carousel', 'laydate', 'form'], function () {
+        var carousel = layui.carousel,
+            laydate = layui.laydate,
+            form = layui.form;
+
+        // 公告轮播
+        carousel.render({
+            elem: '.carousel',
+            width: '100%',
+            arrow: 'hover',
+            interval: 5000,
+        });
+
+        // 日期选择器
+        laydate.render({
+            elem: '#date-picker',
+            type: 'date',
+            min: 0,
+            trigger: 'click',
+        });
+
+        // 表单验证
+        form.verify({
+            departure: [
+                /^[\S]{2,10}$/
+                , '出发地格式不正确'
+            ],
+            destination: [
+                /^[\S]{2,10}$/
+                , '目的地格式不正确'
+            ],
+            departureDate: [
+                /^[\S]{2,10}$/
+                , '出发日期格式不正确'
+            ],
+        });
+    });
+</script>
+</body>
+</html>

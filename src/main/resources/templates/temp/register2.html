@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.6/css/layui.min.css">
+</head>
+<body>
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md-offset3 layui-col-md6">
+            <form class="layui-form" action="/doRegister" method="post" lay-filter="register">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" lay-verify="required|username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="password" lay-verify="required|password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">确认密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="passwordAgain" lay-verify="required|passwordAgain" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="phone" lay-verify="required|phone" placeholder="请输入电话" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="email" lay-verify="required|email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="register">立即注册</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/layui/2.5.6/layui.min.js"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+
+        // 自定义验证规则
+        form.verify({
+            username: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(value.length < 2){
+                    return '用户名长度不能小于2啊';
+                }
+            },
+            password: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(value.length < 4){
+                    return '密码不能小于4啊';
+                }
+            },
+            repassword: function(value, item){ //value：表单的值、item：表单的DOM对象
+                var password = $("input[name='password']").val();
+                if(password != value){
+                    return '两次输入的密码不一致';
+                }
+            },
+            phone: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(!/^1[3456789]\d{9}$/.test(value)){
+                    return '请输入正确的手机号码';
+                }
+            },
+            email: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(!/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/.test(value)){
+                    return '请输入正确的邮箱格式';
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(register)', function(data){
+            $.ajax({
+                url:'/doRegister',
+                type:'POST',
+                data:data.field,
+                success:function (res) {
+                    if(res.success){
+                        layer.msg(res.msg,{icon:1,time:2000},function(){
+                            window.location.href = "/login";
+                        });
+                    }else {
+                        layer.msg(res.msg,{icon:5,time:2000});
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
