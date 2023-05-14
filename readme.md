@@ -3,45 +3,45 @@
 ###登录功能模块
 ![Image text](https://github.com/iesrc/shoots/blob/master/login.png)
 ###注册功能模块
-![avatar](src\main\resources\shoots\register.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/register.png)
 ##用户功能模块
 ###用户主页面
-![avatar](src\main\resources\shoots\usermain.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/usermain.png)
 ###搜索车次
-![avatar](src\main\resources\shoots\searchSchedule.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/searchSchedule.png)
 ###预定车票
-![avatar](src\main\resources\shoots\bookTicket.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/bookTicket.png)
 ###确认订单信息
-![avatar](src\main\resources\shoots\comfirmOrder.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/comfirmOrder.png)
 ###我的订单
-![avatar](src\main\resources\shoots\myOrder.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/myOrder.png)
 ###车票管理
-![avatar](src\main\resources\shoots\ticketManage.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/ticketManage.png)
 ###退票
-![avatar](src\main\resources\shoots\refund.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/refund.png)
 ###改签
-![avatar](src\main\resources\shoots\change.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/change.png)
 
-![avatar](src\main\resources\shoots\change2.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/change2.png)
 ###乘客管理
-![avatar](src\main\resources\shoots\passenger.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/passenger.png)
 ###查看系统公告
-![avatar](src\main\resources\shoots\lookNews.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/lookNews.png)
 ##管理员功能模块
 ###车票管理
-![avatar](src\main\resources\shoots\manageTicket.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/manageTicket.png)
 ###订单管理
-![avatar](src\main\resources\shoots\manageOrder.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/manageOrder.png)
 ###用户管理
-![avatar](src\main\resources\shoots\user.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/user.png)
 ###乘客管理
-![avatar](src\main\resources\shoots\managePassenger.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/managePassenger.png)
 ###路线管理
-![avatar](src\main\resources\shoots\routes.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/routes.png)
 ###车次管理
-![avatar](src\main\resources\shoots\schedule.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/schedule.png)
 ###公告管理
-![avatar](src\main\resources\shoots\manageNews.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/manageNews.png)
 ##项目使用的开发工具
 ###IDE:idea2021.2.2
 ##项目使用的数据库
