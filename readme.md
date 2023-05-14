@@ -1,7 +1,7 @@
 # 汽车订票系统/车票订票系统
 ##功能模块
 ###登录功能模块
-![avatar](src\main\resources\shoots\login.png)
+![Image text](https://github.com/iesrc/shoots/blob/master/login.png)
 ###注册功能模块
 ![avatar](src\main\resources\shoots\register.png)
 ##用户功能模块
